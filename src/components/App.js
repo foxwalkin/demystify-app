@@ -3,7 +3,8 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from '../reducers';
 import './App.css';
-import MystifyCanvas from './MystifyCanvas'
+import FrameRateSlider from './FrameRateSlider';
+import MystifyCanvas from './MystifyCanvas';
 
 const initialState = {
 	width: 320,
@@ -25,7 +26,10 @@ class App extends Component {
   render() {
     return (
 			<Provider store={store}>
-        <MystifyCanvas state={store.getState()} />
+				<div className="App">
+					<FrameRateSlider state={store.getState()} />
+	        <MystifyCanvas state={store.getState()} />
+	      </div>
 			</Provider>
     );
   }

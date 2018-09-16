@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-// import various reducers here
+import mystify from './mystify';
 
 export default combineReducers({
-	// put various reducers here
+	mystify
 });
