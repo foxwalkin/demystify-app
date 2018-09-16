@@ -12,7 +12,7 @@ const initialState = {
 	numPoints: 5
 }
 
-function mystify(state = initialState, action) {
+export default function mystify(state = initialState, action) {
 	switch(action.type) {
 		case 'SET_FPS':
 			return Object.assign({}, state, {

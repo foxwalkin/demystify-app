@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { MAX_FPS } from '../constants';
 import './MystifyCanvas.css';
 
 class MystifyCanvas extends Component {
@@ -24,16 +26,15 @@ class MystifyCanvas extends Component {
 
 	componentDidMount() {
 		this.initialize();
-
 		// Using setTimeout instead of original setInterval
 		// so that we can change the fps in real time
-		setTimeout(this.drawFrame.bind(this), 1000 / this.props.state.fps)
+		setTimeout(this.drawFrame.bind(this), 1000 / this.props.fps)
 	}
 
 	initialize() {
 		const canvas = this.refs.canvas;
 
-		for (let i=0; i < this.props.state.numPoints; i++) {
+		for (let i=0; i < this.props.numPoints; i++) {
 			this.points.push({
 				x: Math.random() * canvas.width,
 				y: Math.random() * canvas.height,
@@ -46,8 +47,11 @@ class MystifyCanvas extends Component {
 		const canvas = this.refs.canvas;
 		const context = this.refs.canvas.getContext('2d');
 
+		let speed = this.props.speed * (MAX_FPS / this.props.fps);
+		let fadeSpeed = this.props.fadeSpeed * (MAX_FPS / this.props.fps);
+
 		context.beginPath();
-		context.strokeStyle = `rgba(${this.props.state.color.r},${this.props.state.color.g},${this.props.state.color.b},100)`;
+		context.strokeStyle = `rgba(${this.props.color.r},${this.props.color.g},${this.props.color.b},100)`;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
 		let dat = [];
@@ -58,8 +62,8 @@ class MystifyCanvas extends Component {
 			if (i===0) context.moveTo(this.points[i].x, this.points[i].y);
 			else context.lineTo(this.points[i].x, this.points[i].y);
 
-			this.speedx = Math.cos(this.points[i].angle) * this.props.state.speed; 
-			this.speedy = Math.sin(this.points[i].angle) * this.props.state.speed;
+			this.speedx = Math.cos(this.points[i].angle) * speed; 
+			this.speedy = Math.sin(this.points[i].angle) * speed;
 
 			if (this.points[i].x + this.speedx >= canvas.width || this.points[i].x + this.speedx <= 0) {
 				mod = 0;
@@ -75,8 +79,8 @@ class MystifyCanvas extends Component {
 				this.points[i].angle = ((this.points[i].angle + Math.PI) - (this.points[i].angle * 2)) + mod;
 				if (this.points[i].angle > Math.PI*2 ) this.points[i].angle -= Math.PI*2;
 				else if (this.points[i].angle < 0) this.points[i].angle += Math.PI*2;
-				this.speedx = Math.cos(this.points[i].angle) * this.props.state.speed; 
-				this.speedy = Math.sin(this.points[i].angle) * this.props.state.speed;
+				this.speedx = Math.cos(this.points[i].angle) * speed; 
+				this.speedy = Math.sin(this.points[i].angle) * speed;
 				hitWall = false;
 			}
 
@@ -93,29 +97,43 @@ class MystifyCanvas extends Component {
 		context.stroke();
 
 		for (let i=0; i < this.trail.length; i++) {
-			let alpha = this.trail[i][this.props.state.numPoints * 2];
+			let alpha = this.trail[i][this.props.numPoints * 2];
 			if (alpha <= 0) this.trail.splice(i, 1);
 			context.beginPath();
-			context.strokeStyle = `rgba(${this.props.state.color.r},${this.props.state.color.g},${this.props.state.color.b},${alpha / 100})`;
-			for (let j=0; j < this.props.state.numPoints * 2 ; j += 2) {
+			context.strokeStyle = `rgba(${this.props.color.r},${this.props.color.g},${this.props.color.b},${alpha / 100})`;
+			for (let j=0; j < this.props.numPoints * 2 ; j += 2) {
 				if (j === 0) context.moveTo(this.trail[i][j],this.trail[i][j+1]);
 				else context.lineTo(this.trail[i][j],this.trail[i][j+1]);
 			}
 			context.closePath();
 			context.stroke();
-			this.trail[i][this.props.state.numPoints * 2] -= this.props.state.fadeSpeed;
+			this.trail[i][this.props.numPoints * 2] -= fadeSpeed;
 		}
 
 		// Again, using setTimeout instead of original setInterval so that we can change
 		// the fps in real time
-		setTimeout(this.drawFrame.bind(this), 1000 / this.props.state.fps);
+		setTimeout(this.drawFrame.bind(this), 1000 / this.props.fps);
 	}
 
   render() {
     return (
-      <canvas ref="canvas" width={this.props.state.width} height={this.props.state.height}/>
+      <canvas ref="canvas" width={this.props.width} height={this.props.height}/>
     );
   }
 }
 
-export default MystifyCanvas;
+const mapStateToProps = (state) => {
+	return {
+		color: state.mystify.color,
+		speed: state.mystify.speed,
+		numPoints: state.mystify.numPoints,
+		fadeSpeed: state.mystify.fadeSpeed,
+		fps: state.mystify.fps,
+		width: state.mystify.width,
+		height: state.mystify.height
+	}
+}
+
+export default connect(
+	mapStateToProps
+	)(MystifyCanvas);
