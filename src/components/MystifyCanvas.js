@@ -93,7 +93,7 @@ class MystifyCanvas extends Component {
 		context.stroke();
 
 		for (let i=0; i < this.trail.length; i++) {
-			var alpha = this.trail[i][this.props.state.numPoints * 2];
+			let alpha = this.trail[i][this.props.state.numPoints * 2];
 			if (alpha <= 0) this.trail.splice(i, 1);
 			context.beginPath();
 			context.strokeStyle = "rgba(15,237,183," + alpha / 100 + ")";
