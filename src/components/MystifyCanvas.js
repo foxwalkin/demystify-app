@@ -47,7 +47,7 @@ class MystifyCanvas extends Component {
 		const context = this.refs.canvas.getContext('2d');
 
 		context.beginPath();
-		context.strokeStyle = "#0feDb7";
+		context.strokeStyle = `rgba(${this.props.state.color.r},${this.props.state.color.g},${this.props.state.color.b},100)`;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
 		let dat = [];
@@ -96,7 +96,7 @@ class MystifyCanvas extends Component {
 			let alpha = this.trail[i][this.props.state.numPoints * 2];
 			if (alpha <= 0) this.trail.splice(i, 1);
 			context.beginPath();
-			context.strokeStyle = "rgba(15,237,183," + alpha / 100 + ")";
+			context.strokeStyle = `rgba(${this.props.state.color.r},${this.props.state.color.g},${this.props.state.color.b},${alpha / 100})`;
 			for (let j=0; j < this.props.state.numPoints * 2 ; j += 2) {
 				if (j === 0) context.moveTo(this.trail[i][j],this.trail[i][j+1]);
 				else context.lineTo(this.trail[i][j],this.trail[i][j+1]);

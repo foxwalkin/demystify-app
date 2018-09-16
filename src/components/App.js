@@ -8,6 +8,11 @@ import MystifyCanvas from './MystifyCanvas'
 const initialState = {
 	width: 320,
 	height: 240,
+	color: {
+		r: 15,
+		g: 237,
+		b: 183
+	},
 	fps: 60,
 	speed: 5,
 	fadeSpeed: 3,
