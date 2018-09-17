@@ -43,8 +43,7 @@ class MystifyCanvas extends Component {
 		}
 	}
 
-	addPoint(point) {
-		if (!point) point = this.newPoint();
+	addPoint(point = this.newPoint()) {
 		this.points.push(point);
 	}
 
@@ -160,7 +159,11 @@ class MystifyCanvas extends Component {
 			    	<canvas ref="canvas" width={this.props.width} height={this.props.height}/>
 			    	<div style={{position: 'absolute', right: -96, bottom: -20, fontFamily: 'Arial, sans-serif', fontSize: 14}}>^ Drag to Resize</div>
 			    </ResizableBox>
-			    <pre style={{textAlign: 'left', backgroundColor: '#eee', margin: 40, padding: 20}}>This function draws each frame on the canvas:<br/><br/>
+			    <pre style={{textAlign: 'left', backgroundColor: '#eee', margin: 40, padding: 20}}>This is the code responsible for drawing what you see (Transpiled ES6). For original source, see: <a href="https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx" target="_blank">https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx</a><br/><br/>
+			    {this.componentDidMount.toString()}<br/><br/>
+			    {this.newPoint.toString()}<br/><br/>
+			    {this.addPoint.toString()}<br/><br/>
+			    {this.initialize.toString()}<br/><br/>
 			    {this.drawFrame.toString()}</pre>
 		    </div>
 	    );
