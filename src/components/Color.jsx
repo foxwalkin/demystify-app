@@ -7,7 +7,7 @@ import { rgbToHex, hexToRgb } from '../utils/Color';
 class Color extends Component {
 
 	handleChange(event) {
-		let newColor = hexToRgb(event.target.value)
+		let newColor = hexToRgb(event.target.value);
 		this.props.setColor(newColor);
 	}
 
