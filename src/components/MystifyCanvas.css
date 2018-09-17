@@ -1,3 +1,7 @@
+.canvasContainer {
+  margin-bottom: 50px;
+}
+
 canvas {
   background-color: #272525;
   display: block;

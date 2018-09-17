@@ -155,11 +155,13 @@ class MystifyCanvas extends Component {
 
 	render() {
 	    return (
-	    	<div>
-	    	<ResizableBox width={this.props.width} height={this.props.height} onResize={this.onResize.bind(this)}>
-		    	<canvas ref="canvas" width={this.props.width} height={this.props.height}/>
-		    	<div style={{position: 'absolute', right: -96, bottom: -20, fontFamily: 'Arial, sans-serif', fontSize: 14}}>^ Drag to Resize</div>
-		    </ResizableBox>
+	    	<div className="canvasContainer">
+		    	<ResizableBox width={this.props.width} height={this.props.height} onResize={this.onResize.bind(this)}>
+			    	<canvas ref="canvas" width={this.props.width} height={this.props.height}/>
+			    	<div style={{position: 'absolute', right: -96, bottom: -20, fontFamily: 'Arial, sans-serif', fontSize: 14}}>^ Drag to Resize</div>
+			    </ResizableBox>
+			    <pre style={{textAlign: 'left', backgroundColor: '#eee', margin: 40, padding: 20}}>This function draws each frame on the canvas:<br/><br/>
+			    {this.drawFrame.toString()}</pre>
 		    </div>
 	    );
 	}
