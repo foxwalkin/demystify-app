@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setFps } from '../actions';
-import { bindActionCreators } from 'redux';
+import { setNumberOfPoints } from '../actions'
+import { bindActionCreators } from 'redux'
 
-class FrameRateSlider extends Component {
+class PointsSlider extends Component {
 	handleChange(event) {
-		this.props.setFps(event.target.value);
+		this.props.setNumberOfPoints(event.target.value);
 	}
 
 	render() {
 	    return (
 	    	<div className="slider">
-	    		Frame Rate:
+	    		Points:
 		    	<input
 		    		type="range"
-		    		min="1"
-		    		max="60"
-		    		value={this.props.fps}
+		    		min="2"
+		    		max="10"
+		    		value={this.props.numPoints}
 		    		onChange={this.handleChange.bind(this)}
 		    	/>
-		    	<span>{this.props.fps}</span>
+		    	<span>{this.props.numPoints}</span>
 		    </div>
 	    );
 	}
@@ -27,15 +27,15 @@ class FrameRateSlider extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		fps: state.mystify.fps,
+		numPoints: state.mystify.numPoints,
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ setFps }, dispatch);
+	return bindActionCreators({ setNumberOfPoints }, dispatch);
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-	)(FrameRateSlider);
+	)(PointsSlider);

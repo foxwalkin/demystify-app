@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { ResizableBox } from 'react-resizable';
+import { setSize } from '../actions';
+import { bindActionCreators } from 'redux'
 import { MAX_FPS } from '../constants';
 import './MystifyCanvas.css';
 
@@ -31,15 +34,23 @@ class MystifyCanvas extends Component {
 		setTimeout(this.drawFrame.bind(this), 1000 / this.props.fps)
 	}
 
-	initialize() {
+	newPoint() {
 		const canvas = this.refs.canvas;
+		return {
+			x: Math.random() * canvas.width,
+			y: Math.random() * canvas.height,
+			angle: Math.random() * (Math.PI*2)			
+		}
+	}
 
+	addPoint(point) {
+		if (!point) point = this.newPoint();
+		this.points.push(point);
+	}
+
+	initialize() {
 		for (let i=0; i < this.props.numPoints; i++) {
-			this.points.push({
-				x: Math.random() * canvas.width,
-				y: Math.random() * canvas.height,
-				angle: Math.random() * (Math.PI*2)			
-			});
+			this.addPoint();
 		}
 	}
 
@@ -48,7 +59,30 @@ class MystifyCanvas extends Component {
 		const context = this.refs.canvas.getContext('2d');
 
 		let speed = this.props.speed * (MAX_FPS / this.props.fps);
-		let fadeSpeed = this.props.fadeSpeed * (MAX_FPS / this.props.fps);
+		// let fadeSpeed = this.props.fadeSpeed * (MAX_FPS / this.props.fps);
+		let fadeSpeed = 100 / this.props.trailLength;
+
+		// Number of Points upadtes
+		if (this.points.length < this.props.numPoints) {
+			let diff = this.props.numPoints - this.points.length;
+			for (let i=0; i < diff; i++) {
+				this.addPoint();
+			}
+			// for (let i=0; i < this.trail.length; i++) {
+			// 	this.trail[i] = [
+			// 		this.trail[i].slice(0, ((this.props.numPoints) * 2) - 1),
+			// 		this.trail[i].slice(-1)
+			// 	];
+			// }
+		} else if (this.points.length > this.props.numPoints) {
+			this.points = this.points.slice(0, this.props.numPoints);
+			// for (let i=0; i < this.trail.length; i++) {
+			// 	this.trail[i] = [
+			// 		this.trail[i].slice(0, ((this.props.numPoints) * 2) - 1),
+			// 		this.trail[i].slice(-1)
+			// 	];
+			// }
+		}
 
 		context.beginPath();
 		context.strokeStyle = `rgba(${this.props.color.r},${this.props.color.g},${this.props.color.b},100)`;
@@ -115,11 +149,20 @@ class MystifyCanvas extends Component {
 		setTimeout(this.drawFrame.bind(this), 1000 / this.props.fps);
 	}
 
-  render() {
-    return (
-      <canvas ref="canvas" width={this.props.width} height={this.props.height}/>
-    );
-  }
+	onResize(event, {element, size}) {
+		this.props.setSize(size);
+	}
+
+	render() {
+	    return (
+	    	<div>
+	    	<ResizableBox width={this.props.width} height={this.props.height} onResize={this.onResize.bind(this)}>
+		    	<canvas ref="canvas" width={this.props.width} height={this.props.height}/>
+		    	<div style={{position: 'absolute', right: -96, bottom: -20, fontFamily: 'Arial, sans-serif', fontSize: 14}}>^ Drag to Resize</div>
+		    </ResizableBox>
+		    </div>
+	    );
+	}
 }
 
 const mapStateToProps = (state) => {
@@ -127,13 +170,18 @@ const mapStateToProps = (state) => {
 		color: state.mystify.color,
 		speed: state.mystify.speed,
 		numPoints: state.mystify.numPoints,
-		fadeSpeed: state.mystify.fadeSpeed,
+		trailLength: state.mystify.trailLength,
 		fps: state.mystify.fps,
 		width: state.mystify.width,
 		height: state.mystify.height
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({ setSize }, dispatch);
+}
+
 export default connect(
-	mapStateToProps
+	mapStateToProps,
+	mapDispatchToProps
 	)(MystifyCanvas);

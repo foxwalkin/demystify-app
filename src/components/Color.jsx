@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setFps } from '../actions';
+import { setColor } from '../actions';
 import { bindActionCreators } from 'redux';
+import { rgbToHex, hexToRgb } from '../utils/Color';
 
-class FrameRateSlider extends Component {
+class Color extends Component {
+
 	handleChange(event) {
-		this.props.setFps(event.target.value);
+		let newColor = hexToRgb(event.target.value)
+		this.props.setColor(newColor);
 	}
 
 	render() {
 	    return (
 	    	<div className="slider">
-	    		Frame Rate:
+	    		Color:
 		    	<input
-		    		type="range"
-		    		min="1"
-		    		max="60"
-		    		value={this.props.fps}
+		    		type="color"
+		    		value={this.props.color}
 		    		onChange={this.handleChange.bind(this)}
 		    	/>
-		    	<span>{this.props.fps}</span>
 		    </div>
 	    );
 	}
@@ -27,15 +27,15 @@ class FrameRateSlider extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		fps: state.mystify.fps,
+		color: rgbToHex(state.mystify.color.r, state.mystify.color.g, state.mystify.color.b)
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ setFps }, dispatch);
+	return bindActionCreators({ setColor }, dispatch);
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-	)(FrameRateSlider);
+	)(Color);

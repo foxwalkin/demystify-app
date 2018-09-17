@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setFps } from '../actions';
-import { bindActionCreators } from 'redux';
+import { setTrailLength } from '../actions'
+import { bindActionCreators } from 'redux'
 
-class FrameRateSlider extends Component {
+class TrailLengthSlider extends Component {
 	handleChange(event) {
-		this.props.setFps(event.target.value);
+		this.props.setTrailLength(event.target.value);
 	}
 
 	render() {
 	    return (
 	    	<div className="slider">
-	    		Frame Rate:
+	    		Trail Length:
 		    	<input
 		    		type="range"
-		    		min="1"
-		    		max="60"
-		    		value={this.props.fps}
+		    		min="0"
+		    		max="500"
+		    		value={this.props.trailLength}
 		    		onChange={this.handleChange.bind(this)}
 		    	/>
-		    	<span>{this.props.fps}</span>
+		    	<span>{this.props.trailLength}</span>
 		    </div>
 	    );
 	}
@@ -27,15 +27,15 @@ class FrameRateSlider extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		fps: state.mystify.fps,
+		trailLength: state.mystify.trailLength,
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({ setFps }, dispatch);
+	return bindActionCreators({ setTrailLength }, dispatch);
 }
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-	)(FrameRateSlider);
+	)(TrailLengthSlider);
