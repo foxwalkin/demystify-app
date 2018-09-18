@@ -1,15 +1,15 @@
 const initialState = {
-	width: 320,
-	height: 240,
+	width: 1246,
+	height: 510,
 	color: {
-		r: 15,
+		r: 74,
 		g: 237,
-		b: 183
+		b: 233
 	},
 	fps: 60,
-	speed: 5,
-	trailLength: 33,
-	numPoints: 5
+	speed: 3.5,
+	trailLength: 233,
+	numPoints: 5		
 }
 
 export default function mystify(state = initialState, action) {
@@ -45,6 +45,8 @@ export default function mystify(state = initialState, action) {
 				...state,
 				color: action.color
 			};
+		case 'LOAD_PRESET':
+			return action.preset.state;
 		default:
 			return state;
 	}

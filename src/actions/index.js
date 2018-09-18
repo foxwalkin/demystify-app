@@ -39,3 +39,10 @@ export function setColor(color) {
 		color
 	}
 }
+
+export function loadPreset(preset) {
+	return {
+		type: 'LOAD_PRESET',
+		preset
+	}
+}

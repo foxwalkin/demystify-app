@@ -19,7 +19,7 @@ class FrameRateSlider extends Component {
 		    		value={this.props.speed*10}
 		    		onChange={this.handleChange.bind(this)}
 		    	/>
-		    	<span>{this.props.speed*10}</span>
+		    	<span>{this.props.speed}</span>
 		    </div>
 	    );
 	}

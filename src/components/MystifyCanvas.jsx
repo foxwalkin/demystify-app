@@ -92,6 +92,18 @@ class MystifyCanvas extends Component {
 		let hitWall = false;
 
 		for (let i=0; i < this.points.length; i++) {
+			// Check for out of bounds due to resize / preset change or whatever
+			if (this.points[i].x < 0) {
+				this.points[i].x = 0;
+			} else if (this.points[i].x > canvas.width) {
+				this.points[i].x = canvas.width;
+			}
+			if (this.points[i].y < 0) {
+				this.points[i].y = 0;
+			} else if (this.points[i].y > canvas.height) {
+				this.points[i].y = canvas.height;
+			}
+
 			if (i===0) context.moveTo(this.points[i].x, this.points[i].y);
 			else context.lineTo(this.points[i].x, this.points[i].y);
 
@@ -159,7 +171,7 @@ class MystifyCanvas extends Component {
 			    	<canvas ref="canvas" width={this.props.width} height={this.props.height}/>
 			    	<div style={{position: 'absolute', right: -96, bottom: -20, fontFamily: 'Arial, sans-serif', fontSize: 14}}>^ Drag to Resize</div>
 			    </ResizableBox>
-			    <pre style={{textAlign: 'left', backgroundColor: '#eee', margin: 40, padding: 20}}>This is the code responsible for drawing what you see (Transpiled ES6). For original source, see: <a href="https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx" target="_blank">https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx</a><br/><br/>
+			    <pre style={{textAlign: 'left', backgroundColor: '#eee', margin: 40, padding: 20}}>This is the code responsible for drawing what you see (Transpiled ES6). For original source, see: <a href="https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx" target="_blank" rel="noopener noreferrer">https://github.com/foxwalkin/demystify-app/blob/master/src/components/MystifyCanvas.jsx</a><br/><br/>
 			    {this.componentDidMount.toString()}<br/><br/>
 			    {this.newPoint.toString()}<br/><br/>
 			    {this.addPoint.toString()}<br/><br/>
