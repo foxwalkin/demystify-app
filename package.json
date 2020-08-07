@@ -2,6 +2,7 @@
   "name": "demystify-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "ajv": "^6.5.3",
     "react": "^16.5.1",
